@@ -1,0 +1,9 @@
+{
+  "vcenter_server": "vcenter.local",
+  "vcenter_username": "administrator@vsphere.local",
+  "vcenter_password": "VMware1!",
+  "datacenter": "Datacenter",
+  "datastore": "vsanDatastore",
+  "cluster": "Cluster",
+  "portgroup": "My-Network"
+}

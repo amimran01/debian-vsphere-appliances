@@ -1,0 +1,46 @@
+    <ProductSection ovf:required="true">
+    <Info>Debian Appliance</Info>
+      <Product>VMware vSphere Debian Appliance</Product>
+      <Vendor>Alexis Mimran</Vendor>
+      <Version>{{APPLIANCE_VERSION}}</Version>
+      <ProductUrl>https://github.com/amimran01/packer-vsphere-debian</ProductUrl>
+      <VendorUrl>https://www.linkedin.com/in/alexismimran</VendorUrl>
+      <Category>Networking</Category>
+        <Property ovf:key="guestinfo.hostname" ovf:type="string" ovf:userConfigurable="true" ovf:value="">
+            <Label>Hostname</Label>
+            <Description>Hostname of system</Description>
+        </Property>
+        <Property ovf:key="guestinfo.ipaddress" ovf:type="string" ovf:userConfigurable="true" ovf:value="">
+            <Label>IP Address</Label>
+            <Description>IP Address of the system (Leave blank for DHCP)</Description>
+        </Property>
+        <Property ovf:key="guestinfo.netprefix" ovf:type="string" ovf:userConfigurable="true" ovf:value="">
+            <Label>Network CIDR Prefix</Label>
+            <Description>Network CIDR Prefix (Example: 24)</Description>
+        </Property>
+        <Property ovf:key="guestinfo.gateway" ovf:type="string" ovf:userConfigurable="true" ovf:value="">
+            <Label>Gateway</Label>
+            <Description>Gateway of the system (Leave blank for DHCP)</Description>
+        </Property>
+        <Property ovf:key="guestinfo.dns" ovf:type="string" ovf:userConfigurable="true" ovf:value="">
+            <Label>DNS</Label>
+            <Description>DNS Servers (space separated)</Description>
+        </Property>
+        <Property ovf:key="guestinfo.domain" ovf:type="string" ovf:userConfigurable="true" ovf:value="">
+            <Label>Domain</Label>
+            <Description>Domain</Description>
+        </Property>
+        <Category>OS Credentials</Category>
+        <Property ovf:key="guestinfo.password" ovf:password="true" ovf:type="string" ovf:userConfigurable="true" ovf:value="">
+            <Label>Root Password</Label>
+            <Description>Password to login in as root. Please use a secure password</Description>
+        </Property>
+        <Property ovf:key="guestinfo.sshkey" ovf:type="string" ovf:userConfigurable="true" ovf:value="">
+            <Label>SSH Public Key</Label>
+            <Description>Leverage an SSH Key to login as root with no password</Description>
+        </Property>
+        <Property ovf:key="guestinfo.kubernetesrelease" ovf:type="string" ovf:userConfigurable="true" ovf:value="">
+            <Label>Kubernetes Release</Label>
+            <Description>Kubernetes release (Example : 1.24.2). If empty, install the latest release</Description>
+        </Property>
+    </ProductSection>

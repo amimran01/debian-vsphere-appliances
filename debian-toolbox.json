@@ -1,0 +1,112 @@
+{
+  "builders": [
+    {
+      "boot_command": [
+        "<esc><wait>",
+        "install <wait>",
+        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
+        "debian-installer=en_US <wait>",
+        "auto <wait>",
+        "net.ifnames=0 <wait>",
+        "biosdevname=0 <wait>",
+        "locale=en_US <wait>",
+        "kbd-chooser/method=us <wait>",
+        "keyboard-configuration/xkb-keymap=us <wait>",
+        "netcfg/choose_interface=eth0 <wait>",
+        "netcfg/get_hostname={{ user `hostname` }} <wait>",
+        "netcfg/get_domain=vmware.lab <wait>",
+        "fb=false <wait>",
+        "debconf/frontend=noninteractive <wait>",
+        "console-setup/ask_detect=false <wait>",
+        "console-keymaps-at/keymap=us <wait>",
+        "<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "http_directory": "http",
+      "iso_checksum": "{{ user `iso_checksum_type` }}:{{ user `iso_checksum` }}",
+      "iso_url": "{{ user `iso_url` }}",
+      "name": "debian-toolbox-{{ user `version` }}",
+      "shutdown_command": "/sbin/shutdown -Ph now",
+      "shutdown_timeout": "30s",
+      "ssh_password": "{{ user `guest_password` }}",
+      "ssh_port": 22,
+      "ssh_timeout": "60m",
+      "ssh_username": "{{ user `guest_username` }}",
+      "type": "vsphere-iso",
+      "vm_name": "debian-toolbox-{{ user `version` }}",
+      "RAM": "{{ user `ramsize` }}",
+      "CPUs": "{{ user `numvcpus` }}",
+      "guest_os_type": "debian11_64Guest",
+      "vcenter_server": "{{ user `vcenter_server` }}",
+      "username": "{{ user `vcenter_username` }}",
+      "password": "{{ user `vcenter_password` }}",
+      "insecure_connection": "true",
+      "datacenter": "{{ user `datacenter` }}",
+      "storage": [
+        {
+          "disk_size": 8000,
+          "disk_thin_provisioned": true
+        }
+      ],
+      "network_adapters": [
+        {
+          "network": "{{ user `portgroup` }}",
+          "network_card": "vmxnet3"
+        }
+      ],
+      "datastore": "{{ user `datastore` }}",
+      "cluster": "{{ user `cluster` }}",
+      "export": {
+        "force": true,
+        "output_directory": "./output-debian-toolbox-{{ user `version` }}"
+      }
+    }
+  ],
+  "post-processors": [
+    {
+      "environment_vars": [
+        "APPLIANCE_NAME=debian-toolbox-{{ user `version` }}",
+        "APPLIANCE_VERSION={{ user `version` }}"
+      ],
+      "inline": [
+        "cd postprocess-ova-properties",
+        "./add_ovf_properties.sh"
+      ],
+      "type": "shell-local"
+    }
+  ],
+  "provisioners": [
+    {
+      "destination": "/root/.bash_profile",
+      "source": "files/bash_profile.sh",
+      "type": "file"
+    },
+    {
+      "destination": "/root/.bash_prompt",
+      "source": "files/bash_prompt.sh",
+      "type": "file"
+    },
+    {
+      "destination": "/sbin/debian-init.py",
+      "source": "files/debian-init.py",
+      "type": "file"
+    },
+    {
+      "type": "shell",
+      "environment_vars": ["DEBIAN_FRONTEND=noninteractive"],
+      "scripts": [
+        "scripts/debian-update.sh",
+        "scripts/debian-system.sh",
+        "scripts/debian-storage.sh",
+        "scripts/debian-network.sh",
+        "scripts/debian-docker.sh",
+        "scripts/debian-hashicorp.sh",
+        "scripts/debian-vmware.sh",
+        "scripts/debian-settings.sh",
+        "scripts/debian-ssh.sh",
+        "scripts/debian-cleanup.sh"
+      ]
+    }
+  ]
+}
+
