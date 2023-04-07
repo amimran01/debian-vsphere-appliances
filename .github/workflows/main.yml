@@ -12,6 +12,9 @@ jobs:
       - name: Remove old output if exists
         run: |
           rm -rf output-debian-minimal-* 
+      - name: Copy Debian Builder 
+        run: |
+          cp -f ~/debian-builder.json ./debian-builder.json 
       - name: Packer Build
         run: |
           echo "Validating Image Files.."
