@@ -19,3 +19,8 @@ jobs:
         run: |
           echo "Validating Image Files.."
           packer build --on-error=ask -force --var-file="debian-builder.json" --var-file="debian-version-11.6.0.json" debian-minimal.json
+      - name: Packer Build
+        run: |
+          echo "Upload image to S3.."
+          aws s3 cp */*.ova s3://amimran-images/
+
